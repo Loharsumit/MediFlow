@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pharmacy ERP Dashboard V1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                        "slate-card": "#1e293b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body { font-family: 'Inter', sans-serif; }
+        }
+        .glass { 
+            background: rgba(30, 41, 59, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .glass-gradient-1 {
+            background: linear-gradient(135deg, rgba(19, 91, 236, 0.15) 0%, rgba(30, 41, 59, 0.8) 100%);
+        }
+        .glass-gradient-2 {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(30, 41, 59, 0.8) 100%);
+        }
+        .glass-gradient-3 {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(30, 41, 59, 0.8) 100%);
+        }
+        .glass-gradient-4 {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(30, 41, 59, 0.8) 100%);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display flex min-h-screen">
+<aside class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 border-r border-white/5 hidden lg:flex flex-col">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-10">
+<div class="bg-primary p-2 rounded-xl shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white">medical_services</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-white">PharmaCore</h1>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-xl font-medium transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span>POS Terminal</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span>Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-white/5">
+<div class="flex items-center gap-3">
+<img alt="Profile" class="w-10 h-10 rounded-full border border-white/10 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYR5XxLbvQL2OASzNIzgU0asIobMC_7fTXcD_-CFNHNOmeoX-7UbbrpvD3LhHGmw6PHPMU1nXE2bDDZAaohrYhOPG33UOB48wIUFUGrP0bS8V0LHET7XfRh-ZTS8WIUYgWxIr4SDQVYrPVphc7xtGeE6vzYzeqpG7VeERauK1msRIybiqAA2g0hljr99JTse5e0ofY66ccRyoyJQ2AYfUQOLli9PyKjtRBXLWDw_-Ovx3_6njARgCCTOZbFJ6VB2RgTPMV31apIWw"/>
+<div>
+<p class="text-sm font-semibold text-white">Dr. Sarah Chen</p>
+<p class="text-xs text-slate-500">Administrator</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 lg:ml-64 min-h-screen flex flex-col">
+<header class="sticky top-0 z-40 bg-background-dark/80 backdrop-blur-md border-b border-white/5 px-8 py-4">
+<div class="flex items-center justify-between gap-8">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Search medicines, orders, customers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-lg shadow-primary/25 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        New Sale
+                    </button>
+<div class="relative cursor-pointer">
+<span class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border-2 border-background-dark"></span>
+</div>
+<div class="w-px h-6 bg-white/10"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<img alt="User Avatar" class="w-9 h-9 rounded-full border border-white/10 object-cover group-hover:border-primary transition-colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYR5XxLbvQL2OASzNIzgU0asIobMC_7fTXcD_-CFNHNOmeoX-7UbbrpvD3LhHGmw6PHPMU1nXE2bDDZAaohrYhOPG33UOB48wIUFUGrP0bS8V0LHET7XfRh-ZTS8WIUYgWxIr4SDQVYrPVphc7xtGeE6vzYzeqpG7VeERauK1msRIybiqAA2g0hljr99JTse5e0ofY66ccRyoyJQ2AYfUQOLli9PyKjtRBXLWDw_-Ovx3_6njARgCCTOZbFJ6VB2RgTPMV31apIWw"/>
+<span class="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass glass-gradient-1 p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-500">payments</span>
+</div>
+<span class="text-xs font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded-lg">+12.4%</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Today's Sales</p>
+<h3 class="text-2xl font-bold mt-1">$4,850.50</h3>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">vs $4,200 yesterday</p>
+</div>
+</div>
+<div class="glass glass-gradient-2 p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-purple-500">shopping_cart</span>
+</div>
+<span class="text-xs font-bold text-slate-400 bg-white/5 px-2 py-1 rounded-lg">Stable</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Monthly Purchases</p>
+<h3 class="text-2xl font-bold mt-1">1,240</h3>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Across 48 suppliers</p>
+</div>
+</div>
+<div class="glass glass-gradient-3 p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-amber-500">inventory_2</span>
+</div>
+<span class="text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-1 rounded-lg">Action Needed</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Low Stock Alerts</p>
+<h3 class="text-2xl font-bold mt-1">18 Items</h3>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">6 Critical items</p>
+</div>
+</div>
+<div class="glass glass-gradient-4 p-6 rounded-2xl flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-rose-500">event_busy</span>
+</div>
+<span class="text-xs font-bold text-rose-400 bg-rose-400/10 px-2 py-1 rounded-lg">90 Days</span>
+</div>
+<div>
+<p class="text-slate-400 text-sm font-medium">Expiring Soon</p>
+<h3 class="text-2xl font-bold mt-1">05 Items</h3>
+<p class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">Check batch reports</p>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+<section class="xl:col-span-2">
+<div class="glass rounded-2xl overflow-hidden flex flex-col h-full">
+<div class="px-6 py-5 border-b border-white/5 flex items-center justify-between">
+<h3 class="text-lg font-bold">Recent Sales</h3>
+<button class="text-primary hover:text-blue-400 text-sm font-semibold transition-colors">View All Transactions</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-white/5 text-slate-400 text-xs uppercase tracking-wider">
+<th class="px-6 py-4 font-semibold">Medicine / Invoice</th>
+<th class="px-6 py-4 font-semibold">Customer</th>
+<th class="px-6 py-4 font-semibold">Method</th>
+<th class="px-6 py-4 font-semibold">Amount</th>
+<th class="px-6 py-4 font-semibold text-right">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined text-sm">pill</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Amoxicillin 500mg</p>
+<p class="text-xs text-slate-500">#INV-8902</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-slate-300">Johnathan Wick</td>
+<td class="px-6 py-4">
+<span class="text-[10px] font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded-full uppercase">Card</span>
+</td>
+<td class="px-6 py-4 font-bold text-sm text-white">$45.00</td>
+<td class="px-6 py-4 text-xs text-slate-500 text-right">10:24 AM</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500">
+<span class="material-symbols-outlined text-sm">vaccines</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Paracetamol Syrup</p>
+<p class="text-xs text-slate-500">#INV-8901</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-slate-300">Sarah Connor</td>
+<td class="px-6 py-4">
+<span class="text-[10px] font-bold text-purple-500 bg-purple-500/10 px-2.5 py-1 rounded-full uppercase">UPI</span>
+</td>
+<td class="px-6 py-4 font-bold text-sm text-white">$12.50</td>
+<td class="px-6 py-4 text-xs text-slate-500 text-right">09:45 AM</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+<span class="material-symbols-outlined text-sm">medical_information</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Cetirizine Tab</p>
+<p class="text-xs text-slate-500">#INV-8899</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-slate-300">Mike Oxlong</td>
+<td class="px-6 py-4">
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full uppercase">Cash</span>
+</td>
+<td class="px-6 py-4 font-bold text-sm text-white">$8.00</td>
+<td class="px-6 py-4 text-xs text-slate-500 text-right">08:30 AM</td>
+</tr>
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined text-sm">pill</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Ibuprofen 200mg</p>
+<p class="text-xs text-slate-500">#INV-8898</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-slate-300">Ellen Ripley</td>
+<td class="px-6 py-4">
+<span class="text-[10px] font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded-full uppercase">Card</span>
+</td>
+<td class="px-6 py-4 font-bold text-sm text-white">$22.00</td>
+<td class="px-6 py-4 text-xs text-slate-500 text-right">08:15 AM</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section>
+<div class="glass rounded-2xl overflow-hidden h-full flex flex-col">
+<div class="px-6 py-5 border-b border-white/5">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold">Stock Alerts</h3>
+<span class="material-symbols-outlined text-amber-500 animate-pulse">warning</span>
+</div>
+</div>
+<div class="p-4 space-y-4 flex-1">
+<div class="bg-white/5 border border-white/5 rounded-xl p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Metformin 500mg</p>
+<p class="text-xs text-slate-500 mt-0.5">Diabetes Mgmt</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-amber-500">15 Left</p>
+<span class="text-[10px] text-slate-400 font-medium">Reorder</span>
+</div>
+</div>
+<div class="bg-rose-500/5 border border-rose-500/10 rounded-xl p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold text-rose-200">Insulin Pen</p>
+<p class="text-xs text-rose-500/60 mt-0.5">Hormones</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-rose-500 underline decoration-2">2 Left</p>
+<span class="text-[10px] text-rose-400 font-bold uppercase">Critical</span>
+</div>
+</div>
+<div class="bg-white/5 border border-white/5 rounded-xl p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Vicks Vaporub</p>
+<p class="text-xs text-slate-500 mt-0.5">Cold &amp; Flu</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-amber-500">5 Left</p>
+<span class="text-[10px] text-slate-400 font-medium">Restock</span>
+</div>
+</div>
+<div class="bg-white/5 border border-white/5 rounded-xl p-4 flex items-center justify-between">
+<div>
+<p class="text-sm font-semibold">Salbutamol Inhaler</p>
+<p class="text-xs text-slate-500 mt-0.5">Asthma Care</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-amber-500">8 Left</p>
+<span class="text-[10px] text-slate-400 font-medium">Restock</span>
+</div>
+</div>
+</div>
+<div class="p-4 bg-white/5">
+<button class="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 rounded-xl transition-all">
+                                Generate Restock Order
+                            </button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<div class="lg:hidden fixed bottom-6 right-6 z-50">
+<button class="bg-primary w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl shadow-primary/40 border-4 border-background-dark active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[32px]">menu</span>
+</button>
+</div>
+
+</body></html>

@@ -1,0 +1,16 @@
+{
+  "name": "mediflow-erp",
+  "version": "2.0.0",
+  "description": "MediFlow ERP - Full-Stack Pharmacy Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
+    "express": "^4.21.0"
+  }
+}

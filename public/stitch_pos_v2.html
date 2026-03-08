@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pharmacy POS Billing Screen V2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ecda",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#102220",
+                        "neutral-800": "#1a302e",
+                        "neutral-700": "#234845",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #234845; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<div class="flex h-screen overflow-hidden">
+<aside class="w-64 border-r border-neutral-700 bg-background-light dark:bg-background-dark flex flex-col">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined font-bold">medical_services</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight">PharmaERP <span class="text-primary">V2</span></h2>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-700 transition-colors text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-medium">New Billing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-700 transition-colors text-slate-400" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-700 transition-colors text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-neutral-700 transition-colors text-slate-400" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Sales Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-neutral-700">
+<div class="flex items-center gap-3 p-2 rounded-lg bg-neutral-800">
+<div class="size-10 rounded-full bg-neutral-700 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male pharmacist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbvSC0TTwOGrvmbRzCGlrRFfZRrHYwy66V2Y-i3-YFKaQEiaicdPC_7iSjbqGo7QDbYGJ-gg0XkC5_aBmu25loxozg_zQe3zYirFn8EVgUxx37cfKqHnjw65O24M_quDGg3hL2xmB7uwTFBMB-mbZ1LC_iKSSh1RLbEMF6NWMoNJE8_Ma6X_wd4dBOsJifuJUoLU7LZ3LgCSsBHMfXhDwJCi_83fjwhTxupHl94rSofaaHEA7UUXiew_zukgi1VfFG53aCj_rDWcM"/>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-xs font-bold truncate">Dr. Aris V.</p>
+<p class="text-[10px] text-slate-400 truncate uppercase tracking-widest">Admin Store-01</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">settings</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col overflow-hidden">
+<header class="h-16 border-b border-neutral-700 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark/50 backdrop-blur-md z-10">
+<div class="flex items-center gap-4">
+<span class="text-slate-400 text-sm">Transaction ID: <span class="text-slate-100 font-mono">TXN-2023-98234</span></span>
+<div class="h-4 w-px bg-neutral-700"></div>
+<span class="text-slate-400 text-sm">Date: <span class="text-slate-100">Oct 24, 2023</span></span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-slate-400 p-2 hover:text-primary cursor-pointer transition-colors">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-background-dark"></span>
+</div>
+<button class="bg-neutral-700 hover:bg-neutral-600 text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span>
+                        Recent Sales
+                    </button>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden">
+<section class="flex-1 flex flex-col p-6 overflow-hidden">
+<div class="mb-6">
+<h1 class="text-2xl font-bold mb-4">Item Entry</h1>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-neutral-800 border-neutral-700 rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-primary/50 focus:border-primary text-lg transition-all placeholder:text-slate-500" placeholder="Search medicine by name, salt, or scan barcode..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+<span class="text-[10px] font-bold bg-neutral-700 text-slate-400 px-2 py-1 rounded uppercase tracking-tighter">F1 to focus</span>
+<span class="material-symbols-outlined text-slate-400">barcode_scanner</span>
+</div>
+</div>
+</div>
+<div class="flex-1 bg-neutral-800/50 rounded-2xl border border-neutral-700 flex flex-col overflow-hidden">
+<div class="grid grid-cols-12 gap-4 px-6 py-4 border-b border-neutral-700 text-xs font-bold text-slate-500 uppercase tracking-widest">
+<div class="col-span-5">Product Details</div>
+<div class="col-span-2 text-center">Batch / Exp</div>
+<div class="col-span-2 text-center">Qty</div>
+<div class="col-span-2 text-right">Price</div>
+<div class="col-span-1"></div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-2">
+<div class="grid grid-cols-12 gap-4 items-center px-4 py-3 bg-neutral-800 rounded-xl border border-transparent hover:border-primary/30 transition-all">
+<div class="col-span-5">
+<p class="font-semibold text-slate-100 leading-tight">Augmentin 625 Duo Tablet</p>
+<p class="text-xs text-slate-500">Amoxycillin (500mg) + Clavulanic Acid (125mg)</p>
+</div>
+<div class="col-span-2 text-center">
+<p class="text-xs font-mono text-slate-300">AUG9822</p>
+<p class="text-[10px] text-red-400 font-bold">12/24</p>
+</div>
+<div class="col-span-2 flex justify-center">
+<div class="flex items-center bg-neutral-700 rounded-lg overflow-hidden border border-neutral-600">
+<button class="px-2 py-1 hover:bg-neutral-600 text-primary transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center text-sm font-bold focus:ring-0 p-0" type="text" value="2"/>
+<button class="px-2 py-1 hover:bg-neutral-600 text-primary transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-sm font-bold text-slate-100">₹450.00</p>
+<p class="text-[10px] text-slate-500">₹225.00 / unit</p>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-slate-500 hover:text-red-400 transition-colors p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-4 items-center px-4 py-3 bg-neutral-800 rounded-xl border border-transparent hover:border-primary/30 transition-all">
+<div class="col-span-5">
+<p class="font-semibold text-slate-100 leading-tight">Pan 40 Tablet</p>
+<p class="text-xs text-slate-500">Pantoprazole (40mg)</p>
+</div>
+<div class="col-span-2 text-center">
+<p class="text-xs font-mono text-slate-300">PAN40-X1</p>
+<p class="text-[10px] text-slate-400 font-bold">08/25</p>
+</div>
+<div class="col-span-2 flex justify-center">
+<div class="flex items-center bg-neutral-700 rounded-lg overflow-hidden border border-neutral-600">
+<button class="px-2 py-1 hover:bg-neutral-600 text-primary transition-colors"><span class="material-symbols-outlined text-sm">remove</span></button>
+<input class="w-10 bg-transparent border-none text-center text-sm font-bold focus:ring-0 p-0" type="text" value="1"/>
+<button class="px-2 py-1 hover:bg-neutral-600 text-primary transition-colors"><span class="material-symbols-outlined text-sm">add</span></button>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<p class="text-sm font-bold text-slate-100">₹145.50</p>
+<p class="text-[10px] text-slate-500">₹145.50 / unit</p>
+</div>
+<div class="col-span-1 text-right">
+<button class="text-slate-500 hover:text-red-400 transition-colors p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-neutral-700 bg-neutral-800/80">
+<div class="flex items-center justify-between">
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">no_accounts</span>
+                                        Discard Sale
+                                    </button>
+<button class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">pause_circle</span>
+                                        Hold (F4)
+                                    </button>
+</div>
+<div class="text-right">
+<p class="text-xs text-slate-400">Items: <span class="text-slate-100 font-bold">2</span> | Qty: <span class="text-slate-100 font-bold">3</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<aside class="w-[400px] border-l border-neutral-700 p-6 flex flex-col bg-background-light dark:bg-background-dark/30">
+<h2 class="text-xl font-bold mb-6">Billing Sidebar</h2>
+<div class="space-y-6 flex-1 overflow-y-auto custom-scrollbar pr-2">
+<div class="space-y-4">
+<label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Customer Details</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">person</span>
+<input class="w-full bg-neutral-800 border-neutral-700 rounded-lg pl-10 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="Search customer (Name/Mobile)" type="text"/>
+</div>
+<div class="p-4 rounded-xl bg-primary/5 border border-primary/20">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-sm font-bold text-primary">Ananya Sharma</p>
+<p class="text-xs text-slate-400">+91 98765 43210</p>
+</div>
+<span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded font-bold uppercase tracking-widest">VIP</span>
+</div>
+<p class="text-[10px] text-slate-500 italic">Address: H-24, Green Park Extension, Delhi</p>
+</div>
+</div>
+<div class="space-y-4">
+<label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Prescriber Details</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">stethoscope</span>
+<input class="w-full bg-neutral-800 border-neutral-700 rounded-lg pl-10 py-2 text-sm focus:ring-primary focus:border-primary" placeholder="Doctor's Name" type="text"/>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-neutral-700">
+<label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Payment Summary</label>
+<div class="flex justify-between text-sm">
+<span class="text-slate-400">Subtotal</span>
+<span class="font-medium">₹595.50</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-400">CGST (6%)</span>
+<span class="font-medium">₹35.73</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-400">SGST (6%)</span>
+<span class="font-medium">₹35.73</span>
+</div>
+<div class="flex justify-between text-sm text-primary">
+<span class="font-medium">Loyalty Discount</span>
+<span class="font-medium">-₹25.00</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-neutral-700">
+<div class="mb-4 p-4 rounded-2xl bg-neutral-800 flex justify-between items-center">
+<span class="text-sm font-medium text-slate-400 uppercase tracking-widest">Total Payable</span>
+<span class="text-3xl font-black text-primary">₹641.96</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-neutral-800 border-2 border-primary text-primary transition-all">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-[10px] font-bold mt-1 uppercase">Cash</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-neutral-800 border-2 border-transparent hover:border-neutral-600 transition-all text-slate-400">
+<span class="material-symbols-outlined">qr_code_2</span>
+<span class="text-[10px] font-bold mt-1 uppercase">UPI / Card</span>
+</button>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-black py-5 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-primary/20 transition-all active:scale-95">
+<span class="material-symbols-outlined font-black">receipt</span>
+                            GENERATE INVOICE (F12)
+                        </button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</body></html>

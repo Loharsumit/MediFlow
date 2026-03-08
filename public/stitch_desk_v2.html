@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pharmacy ERP Dashboard V2 - Enterprise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --brand-primary: #1e40af;
+            --brand-secondary: #0f172a;
+            --accent-teal: #0d9488;
+            --sidebar-width: 240px;
+        }
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e40af",
+                        "slate-accent": "#0f172a",
+                        "teal-accent": "#0d9488",
+                        "background-dark": "#020617",
+                        "surface-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </style>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .dark body {
+            background-color: #020617;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 10px;
+        }
+        @media (min-width: 1024px) {
+            .desktop-layout {
+                display: grid;
+                grid-template-columns: var(--sidebar-width) 1fr;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<aside class="hidden lg:flex w-[var(--sidebar-width)] flex-col bg-slate-accent border-r border-slate-800 fixed h-full z-30">
+<div class="p-6 flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined">medication</span>
+</div>
+<span class="text-xl font-bold text-white tracking-tight">PharmaERP</span>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-white bg-blue-600 rounded-lg" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">inventory</span>
+<span class="text-sm font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">shopping_cart</span>
+<span class="text-sm font-medium">Sales &amp; POS</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">analytics</span>
+<span class="text-sm font-medium">Financials</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">description</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800">
+<div class="flex items-center gap-3 px-4 py-3 text-slate-400">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</div>
+</div>
+</aside>
+<div class="flex-1 lg:ml-[var(--sidebar-width)] flex flex-col">
+<header class="sticky top-0 z-20 bg-white dark:bg-background-dark border-b border-slate-200 dark:border-slate-800 px-6 py-3 flex items-center justify-between">
+<div class="flex items-center lg:hidden">
+<span class="material-symbols-outlined text-slate-600">menu</span>
+</div>
+<div class="hidden md:flex flex-1 max-w-2xl mx-12">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-11 pr-4 py-2 bg-slate-100 dark:bg-slate-900 border-none rounded-xl focus:ring-2 focus:ring-primary text-sm" placeholder="Search medicines, orders, or patient records..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold shadow-md hover:bg-blue-700 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="hidden sm:inline">New Transaction</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1"></div>
+<button class="relative p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-2">
+<div class="hidden md:block text-right">
+<p class="text-xs font-bold leading-none">Admin User</p>
+<p class="text-[10px] text-slate-500">Super Admin</p>
+</div>
+<img alt="Profile" class="w-9 h-9 rounded-full bg-slate-200 border border-slate-300 dark:border-slate-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHjWwXVfzbkjNrjhqVnO8yFCVyVpt-PvuZmUcdvaHnTd-JaWtGSghuPmx8FBwChr1AON5U9IgIBePlRN12cEtBJULc2extAUE5sGbHChs2htwQ7cnrW5dflNSjRMluCq99353pcFJji9WOkOt6AauiepoD-xzpHLQO2oyA1rlNPDIJ6it55RhL8djKgvYCBgndv23IcJdI44NZ6FrJQ-8efradD-O4l3zotp08GzQUP3yM5LDRFy6Gak90raebmMy0EhV1VsBY_oE"/>
+</div>
+</div>
+</header>
+<main class="p-6 space-y-8">
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 group-hover:bg-blue-500/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="text-xs font-bold text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">+14.2%</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Gross Sales</p>
+<h3 class="text-2xl font-bold mt-1">$52,490.80</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-teal-500/5 rounded-full -mr-8 -mt-8 group-hover:bg-teal-500/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-teal-100 dark:bg-teal-900/30 text-teal-600 rounded-lg">
+<span class="material-symbols-outlined">receipt</span>
+</div>
+<span class="text-xs font-bold text-blue-600 bg-blue-100 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">1,240 New</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total Invoices</p>
+<h3 class="text-2xl font-bold mt-1">4,821</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full -mr-8 -mt-8 group-hover:bg-red-500/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="text-xs font-bold text-red-600 bg-red-100 dark:bg-red-900/30 px-2 py-0.5 rounded-full">Urgent</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Low Stock</p>
+<h3 class="text-2xl font-bold mt-1">12 Items</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full -mr-8 -mt-8 group-hover:bg-amber-500/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-lg">
+<span class="material-symbols-outlined">group</span>
+</div>
+<span class="text-xs font-bold text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 rounded-full">+5%</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Avg Patient Visit</p>
+<h3 class="text-2xl font-bold mt-1">84/day</h3>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 pb-8">
+<div class="xl:col-span-2 bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<h2 class="font-bold text-slate-800 dark:text-white">Recent Transactions</h2>
+<button class="text-xs font-semibold text-primary hover:underline">Download PDF</button>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-900/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Invoice ID</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Customer</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Status</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Amount</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-semibold">INV-2024-001</span>
+<p class="text-[10px] text-slate-400">10:45 AM</p>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Michael Ross</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/20 text-green-600 text-[10px] font-bold uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$125.50</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary">visibility</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-semibold">INV-2024-002</span>
+<p class="text-[10px] text-slate-400">11:12 AM</p>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Sarah Jenkins</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-amber-100 dark:bg-amber-900/20 text-amber-600 text-[10px] font-bold uppercase">Processing</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$42.00</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary">visibility</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-semibold">INV-2024-003</span>
+<p class="text-[10px] text-slate-400">11:30 AM</p>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Robert Chase</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/20 text-green-600 text-[10px] font-bold uppercase">Completed</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$310.25</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary">visibility</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<span class="text-sm font-semibold">INV-2024-004</span>
+<p class="text-[10px] text-slate-400">12:05 PM</p>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Emma Wilson</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-100 dark:bg-red-900/20 text-red-600 text-[10px] font-bold uppercase">Cancelled</span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$18.90</td>
+<td class="px-6 py-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary">visibility</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col h-full">
+<div class="px-6 py-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">warning</span>
+<h2 class="font-bold text-slate-800 dark:text-white">Critical Stock</h2>
+</div>
+<button class="text-xs font-semibold text-primary hover:underline">Reorder All</button>
+</div>
+<div class="p-4 space-y-3 flex-1 overflow-y-auto custom-scrollbar">
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 flex items-center justify-center">
+<span class="material-symbols-outlined">pill</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-none">Amoxicillin 500mg</p>
+<p class="text-xs text-red-500 font-medium mt-1">4 units remaining</p>
+</div>
+</div>
+<button class="p-2 text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_cart_checkout</span>
+</button>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 text-amber-600 flex items-center justify-center">
+<span class="material-symbols-outlined">vaccines</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-none">Insulin Glargine</p>
+<p class="text-xs text-amber-600 font-medium mt-1">Expiring in 2 days</p>
+</div>
+</div>
+<button class="p-2 text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_cart_checkout</span>
+</button>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 flex items-center justify-center">
+<span class="material-symbols-outlined">nephrology</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-none">Lisinopril 10mg</p>
+<p class="text-xs text-red-500 font-medium mt-1">Out of stock</p>
+</div>
+</div>
+<button class="p-2 text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">shopping_cart_checkout</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 py-2 pb-8 z-40 flex justify-between items-center">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[26px]">grid_view</span>
+<span class="text-[10px] font-bold">Dash</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">inventory</span>
+<span class="text-[10px] font-medium">Stock</span>
+</button>
+<button class="relative -top-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg shadow-blue-500/40 border-4 border-white dark:border-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">analytics</span>
+<span class="text-[10px] font-medium">Stats</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined text-[26px]">person</span>
+<span class="text-[10px] font-medium">User</span>
+</button>
+</nav>
+</div>
+
+</body></html>

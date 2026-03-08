@@ -103,7 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (page === 'pos' && typeof renderPOS === 'function') renderPOS();
     };
 
-    navItems.forEach(n => n.addEventListener('click', (e) => { e.preventDefault(); navigateTo(n.dataset.page); }));
+    navItems.forEach(n => n.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateTo(n.dataset.page);
+        document.getElementById('sidebar').classList.remove('open');
+    }));
 
     // Mobile menu
     document.getElementById('btn-menu')?.addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));

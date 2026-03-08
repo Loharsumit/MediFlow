@@ -17,12 +17,12 @@
                         <input type="text" id="pos-search" placeholder="Search medicine by name or batch..." style="width:100%;padding:0.7rem 0.85rem;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:0.9rem;outline:none"/>
                         <div id="pos-results" class="pos-search-results" style="display:none"></div>
                     </div>
-                    <div class="table-wrap pos-cart" style="flex:1;">
+                    <div class="table-responsive"><div class="table-wrap">
                         <table>
                             <thead><tr><th>Medicine</th><th>Batch</th><th>MRP</th><th>Qty</th><th>GST%</th><th>Total</th><th></th></tr></thead>
                             <tbody id="pos-cart-tbody"><tr><td colspan="7" class="table-empty">Search and add medicines to start billing</td></tr></tbody>
                         </table>
-                    </div>
+                    </div></div>
                 </div>
 
                 <!-- Right: Summary -->

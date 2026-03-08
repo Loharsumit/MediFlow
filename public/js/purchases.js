@@ -15,10 +15,11 @@ window.renderPurchases = async function () {
                     </button>
                 </div>
                 <div class="table-wrap">
-                    <table>
+                    <div class="table-responsive"><table>
                         <thead><tr><th>Name</th><th>Phone</th><th>GSTIN</th><th>Balance</th><th>Actions</th></tr></thead>
                         <tbody id="sup-tbody"><tr><td colspan="5" class="table-empty">Loading...</td></tr></tbody>
                     </table>
+                    </div>
                 </div>
             </div>
             <div>
@@ -47,10 +48,12 @@ window.renderPurchases = async function () {
         </div>
         <div class="page-header"><h3>Purchase History</h3></div>
         <div class="table-wrap">
-            <table>
-                <thead><tr><th>Purchase #</th><th>Supplier Inv</th><th>Date</th><th>Total</th></tr></thead>
-                <tbody id="pur-tbody"><tr><td colspan="4" class="table-empty">Loading...</td></tr></tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>Purchase #</th><th>Supplier Inv</th><th>Date</th><th>Total</th></tr></thead>
+                    <tbody id="pur-tbody"><tr><td colspan="4" class="table-empty">Loading...</td></tr></tbody>
+                </table>
+            </div>
         </div>
     `;
     loadSupplierTable();

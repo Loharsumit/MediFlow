@@ -39,7 +39,7 @@ window.switchReport = function (type) {
                 <button class="btn btn-primary btn-sm" onclick="genSalesReport()">Generate</button>
             </div>
             <div class="stats-grid" id="rpt-stats" style="margin-bottom:1rem"></div>
-            <div class="table-wrap"><table>
+            <div class="table-responsive"><div class="table-wrap"><table>
                 <thead><tr><th>Invoice</th><th>Date</th><th>Customer</th><th>Payment</th><th>Subtotal</th><th>GST</th><th>Net Total</th></tr></thead>
                 <tbody id="rpt-tbody"><tr><td colspan="7" class="table-empty">Select date range and click Generate</td></tr></tbody>
             </table></div>
@@ -51,7 +51,7 @@ window.switchReport = function (type) {
                 <input type="date" id="rpt-pto"/>
                 <button class="btn btn-primary btn-sm" onclick="genPurchaseReport()">Generate</button>
             </div>
-            <div class="table-wrap"><table>
+            <div class="table-responsive"><div class="table-wrap"><table>
                 <thead><tr><th>Purchase #</th><th>Date</th><th>Supplier Inv</th><th>Total</th></tr></thead>
                 <tbody id="rpt-ptbody"><tr><td colspan="4" class="table-empty">Select date range and click Generate</td></tr></tbody>
             </table></div>
@@ -59,7 +59,7 @@ window.switchReport = function (type) {
     } else if (type === 'stock') {
         cont.innerHTML = `
             <div class="toolbar"><button class="btn btn-primary btn-sm" onclick="genStockReport()">Load Stock Report</button></div>
-            <div class="table-wrap"><table>
+            <div class="table-responsive"><div class="table-wrap"><table>
                 <thead><tr><th>Name</th><th>Batch</th><th>Stock</th><th>Reorder</th><th>MRP</th><th>Status</th></tr></thead>
                 <tbody id="rpt-stbody"><tr><td colspan="6" class="table-empty">Click to load</td></tr></tbody>
             </table></div>
@@ -70,7 +70,7 @@ window.switchReport = function (type) {
                 <input type="number" id="rpt-days" value="30" placeholder="Days" style="width:100px"/>
                 <button class="btn btn-primary btn-sm" onclick="genExpiryReport()">Generate</button>
             </div>
-            <div class="table-wrap"><table>
+            <div class="table-responsive"><div class="table-wrap"><table>
                 <thead><tr><th>Name</th><th>Batch</th><th>Expiry</th><th>Stock</th><th>MRP</th></tr></thead>
                 <tbody id="rpt-etbody"><tr><td colspan="5" class="table-empty">Click Generate</td></tr></tbody>
             </table></div>

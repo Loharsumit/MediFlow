@@ -15,7 +15,7 @@ window.renderInventory = async function () {
         <div class="toolbar">
             <input type="text" id="inv-search" placeholder="Search medicines by name, batch, company..." oninput="loadInventoryTable()"/>
         </div>
-        <div class="table-responsive"><div class="table-wrap">
+        <div class="table-wrap">
             <table>
                 <thead><tr>
                     <th>Name</th><th>Company</th><th>Batch</th><th>Expiry</th>
@@ -23,7 +23,7 @@ window.renderInventory = async function () {
                 </tr></thead>
                 <tbody id="inv-tbody"><tr><td colspan="8" class="table-empty">Loading...</td></tr></tbody>
             </table>
-        </div></div>
+        </div>
     `;
     loadInventoryTable();
 };

@@ -6,58 +6,60 @@
 window.renderPurchases = async function () {
     const page = document.getElementById('page-purchases');
     page.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
-            <div>
-                <div class="page-header">
-                    <h3>Suppliers</h3>
-                    <button class="btn btn-primary btn-sm" onclick="openSupplierModal()">
-                        <span class="material-symbols-outlined">add</span> Add Supplier
-                    </button>
-                </div>
-                <div class="table-wrap">
-                    <div class="table-responsive"><table>
-                        <thead><tr><th>Name</th><th>Phone</th><th>GSTIN</th><th>Balance</th><th>Actions</th></tr></thead>
-                        <tbody id="sup-tbody"><tr><td colspan="5" class="table-empty">Loading...</td></tr></tbody>
-                    </table>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="page-header">
-                    <h3>New Purchase Entry</h3>
-                </div>
-                <div class="card" id="purchase-form-card">
-                    <form id="purchase-form">
-                        <div class="form-row">
-                            <div class="form-group"><label>Supplier *</label><select id="pf-supplier" required><option value="">Select Supplier</option></select></div>
-                            <div class="form-group"><label>Invoice No</label><input type="text" id="pf-invno"/></div>
-                        </div>
-                        <div class="form-group"><label>Invoice Date</label><input type="date" id="pf-invdate"/></div>
-                        <hr style="border-color:var(--border);margin:1rem 0"/>
-                        <h4 style="font-size:0.85rem;font-weight:700;margin-bottom:0.75rem">Items</h4>
-                        <div id="pf-items"></div>
-                        <button type="button" class="btn btn-ghost btn-sm" onclick="addPurchaseItemRow()" style="margin-top:0.5rem">
-                            <span class="material-symbols-outlined">add</span> Add Item
-                        </button>
-                        <div class="modal-actions">
-                            <button type="submit" class="btn btn-primary">Save Purchase</button>
-                        </div>
-                    </form>
-                </div>
+        <div class="page-header" style="justify-content:space-between">
+            <h3>Purchase Management</h3>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+               <button class="btn btn-primary btn-sm" onclick="openSupplierModal()">
+                   <span class="material-symbols-outlined">add</span> Add Supplier
+               </button>
+               <button class="btn btn-success btn-sm" onclick="openPurchaseEntryModal()">
+                   <span class="material-symbols-outlined">post_add</span> New Purchase
+               </button>
             </div>
         </div>
-        <div class="page-header"><h3>Purchase History</h3></div>
+        
+        <div class="page-header" style="margin-top:1.5rem"><h4>Suppliers</h4></div>
+        <div class="table-wrap" style="margin-bottom:1.5rem">
+            <table>
+                <thead><tr><th>Name</th><th>Phone</th><th>GSTIN</th><th>Balance</th><th>Actions</th></tr></thead>
+                <tbody id="sup-tbody"><tr><td colspan="5" class="table-empty">Loading...</td></tr></tbody>
+            </table>
+        </div>
+
+        <div class="page-header"><h4>Purchase History</h4></div>
         <div class="table-wrap">
-            <div class="table-responsive">
-                <table>
-                    <thead><tr><th>Purchase #</th><th>Supplier Inv</th><th>Date</th><th>Total</th></tr></thead>
-                    <tbody id="pur-tbody"><tr><td colspan="4" class="table-empty">Loading...</td></tr></tbody>
-                </table>
-            </div>
+            <table>
+                <thead><tr><th>Purchase #</th><th>Supplier Inv</th><th>Date</th><th>Total</th></tr></thead>
+                <tbody id="pur-tbody"><tr><td colspan="4" class="table-empty">Loading...</td></tr></tbody>
+            </table>
         </div>
     `;
     loadSupplierTable();
     loadPurchaseHistory();
+};
+
+window.openPurchaseEntryModal = function () {
+    openModal(`
+        <h3>New Purchase Entry</h3>
+        <form id="purchase-form">
+            <div class="form-row">
+                <div class="form-group"><label>Supplier *</label><select id="pf-supplier" required><option value="">Select Supplier</option></select></div>
+                <div class="form-group"><label>Invoice No</label><input type="text" id="pf-invno"/></div>
+            </div>
+            <div class="form-group"><label>Invoice Date</label><input type="date" id="pf-invdate"/></div>
+            <hr style="border-color:var(--border);margin:1rem 0"/>
+            <h4 style="font-size:0.85rem;font-weight:700;margin-bottom:0.75rem">Items</h4>
+            <div id="pf-items"></div>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="addPurchaseItemRow()" style="margin-top:0.5rem">
+                <span class="material-symbols-outlined">add</span> Add Item
+            </button>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Purchase</button>
+            </div>
+        </form>
+    `);
+
     populateSupplierDropdown();
     addPurchaseItemRow();
 
@@ -85,8 +87,9 @@ window.renderPurchases = async function () {
         try {
             await API.addPurchase({ supplierId: parseInt(supplierId), supplierInvNo, invoiceDate, total, items });
             showToast('Purchase saved!', 'success');
+            closeModal();
             renderPurchases();
-        } catch (e) { }
+        } catch (err) { }
     });
 };
 
@@ -96,15 +99,19 @@ window.addPurchaseItemRow = function () {
     row.className = 'pf-item-row';
     row.style.cssText = 'background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:0.75rem;margin-bottom:0.5rem;position:relative';
     row.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.5rem">
+        <div class="form-row" style="margin-bottom:0.5rem">
             <div class="form-group" style="margin:0"><label style="font-size:0.65rem">Name *</label><input class="pi-name" type="text" placeholder="Medicine name" style="padding:0.4rem 0.5rem;font-size:0.8rem"/></div>
             <div class="form-group" style="margin:0"><label style="font-size:0.65rem">Batch</label><input class="pi-batch" type="text" placeholder="Batch no" style="padding:0.4rem 0.5rem;font-size:0.8rem"/></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0.5rem">
-            <div class="form-group" style="margin:0"><label style="font-size:0.65rem">Qty</label><input class="pi-qty" type="number" value="1" min="1" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
-            <div class="form-group" style="margin:0"><label style="font-size:0.65rem">P.Price (₹)</label><input class="pi-price" type="number" step="0.01" value="0" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
-            <div class="form-group" style="margin:0"><label style="font-size:0.65rem">MRP (₹)</label><input class="pi-mrp" type="number" step="0.01" value="0" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
-            <div class="form-group" style="margin:0"><label style="font-size:0.65rem">Expiry</label><input class="pi-expiry" type="date" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
+        <div class="form-row" style="margin-bottom:0">
+            <div style="display:flex;gap:0.5rem">
+                <div class="form-group" style="margin:0;flex:1"><label style="font-size:0.65rem">Qty</label><input class="pi-qty" type="number" value="1" min="1" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
+                <div class="form-group" style="margin:0;flex:1"><label style="font-size:0.65rem">P.Price</label><input class="pi-price" type="number" step="0.01" value="0" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
+            </div>
+            <div style="display:flex;gap:0.5rem">
+                <div class="form-group" style="margin:0;flex:1"><label style="font-size:0.65rem">MRP</label><input class="pi-mrp" type="number" step="0.01" value="0" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
+                <div class="form-group" style="margin:0;flex:1"><label style="font-size:0.65rem">Expiry</label><input class="pi-expiry" type="date" style="padding:0.4rem 0.5rem;font-size:0.8rem;width:100%"/></div>
+            </div>
         </div>
         <button type="button" class="btn-icon" onclick="this.closest('.pf-item-row').remove()" style="position:absolute;top:0.4rem;right:0.4rem" title="Remove item"><span class="material-symbols-outlined" style="font-size:16px;color:var(--danger)">close</span></button>
     `;

@@ -16,15 +16,17 @@ window.renderSettings = async function () {
             <div class="page-header"><h3>Application Settings</h3></div>
             <div class="card" style="max-width:600px">
                 <form id="settings-form">
-                    <div class="form-group"><label>Store Name</label><input type="text" id="set-store" value="${get('storeName')}"/></div>
                     <div class="form-row">
+                        <div class="form-group"><label>Store Name</label><input type="text" id="set-store" value="${get('storeName')}"/></div>
                         <div class="form-group"><label>Phone</label><input type="text" id="set-phone" value="${get('phone')}"/></div>
-                        <div class="form-group"><label>GSTIN</label><input type="text" id="set-gstin" value="${get('gstin')}"/></div>
                     </div>
-                    <div class="form-group"><label>Address</label><textarea id="set-address" rows="2">${get('address')}</textarea></div>
                     <div class="form-row">
+                        <div class="form-group"><label>GSTIN</label><input type="text" id="set-gstin" value="${get('gstin')}"/></div>
                         <div class="form-group"><label>Drug License No</label><input type="text" id="set-dl" value="${get('drugLicense')}"/></div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group"><label>Invoice Prefix</label><input type="text" id="set-prefix" value="${get('invoicePrefix') || 'INV'}"/></div>
+                        <div class="form-group"><label>Address</label><textarea id="set-address" rows="1">${get('address')}</textarea></div>
                     </div>
                     <div class="modal-actions" style="justify-content:flex-start">
                         <button type="submit" class="btn btn-primary"><span class="material-symbols-outlined">save</span> Save Settings</button>

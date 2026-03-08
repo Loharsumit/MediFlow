@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // GET all medicines (with optional search/filter)
 router.get('/', async (req, res) => {
     try {
         const { search, stockFilter, schedule } = req.query;
-        let query = supabase.from('medicines').select('*').order('name', { ascending: true });
+        let query = supabase.from('medicines').select('*').eq('user_id', req.user.id).order('name', { ascending: true });
 
         if (search) {
             query = query.or(`name.ilike.%${search}%,batch.ilike.%${search}%,company.ilike.%${search}%,hsn.ilike.%${search}%`);
@@ -42,7 +45,7 @@ router.get('/', async (req, res) => {
 // GET single medicine
 router.get('/:id', async (req, res) => {
     try {
-        const { data, error } = await supabase.from('medicines').select('*').eq('id', req.params.id).single();
+        const { data, error } = await supabase.from('medicines').select('*').eq('id', req.params.id).eq('user_id', req.user.id).single();
         if (error) throw error;
         if (!data) return res.status(404).json({ error: 'Medicine not found' });
         res.json(data);
@@ -57,6 +60,7 @@ router.post('/', async (req, res) => {
     try {
         const { name, company, batch, hsn, schedule, stock, mrp, purchasePrice, expiryDate, gstRate, reorderLevel, rackNo, category } = req.body;
         const { data, error } = await supabase.from('medicines').insert([{
+            user_id: req.user.id,
             name, company: company || '', batch, hsn: hsn || '', schedule: schedule || 'None',
             stock: stock || 0, mrp: mrp || 0, purchaseprice: purchasePrice || 0,
             expirydate: expiryDate || '', gstrate: gstRate || 12, reorderlevel: reorderLevel || 10,
@@ -80,7 +84,7 @@ router.put('/:id', async (req, res) => {
             stock: stock || 0, mrp: mrp || 0, purchaseprice: purchasePrice || 0,
             expirydate: expiryDate || '', gstrate: gstRate || 12, reorderlevel: reorderLevel || 10,
             rackno: rackNo || '', category: category || 'General', updatedat: new Date().toISOString()
-        }).eq('id', req.params.id);
+        }).eq('id', req.params.id).eq('user_id', req.user.id);
 
         if (error) throw error;
         res.json({ message: 'Medicine updated' });
@@ -93,7 +97,7 @@ router.put('/:id', async (req, res) => {
 // DELETE medicine
 router.delete('/:id', async (req, res) => {
     try {
-        const { error } = await supabase.from('medicines').delete().eq('id', req.params.id);
+        const { error } = await supabase.from('medicines').delete().eq('id', req.params.id).eq('user_id', req.user.id);
         if (error) throw error;
         res.json({ message: 'Medicine deleted' });
     } catch (error) {

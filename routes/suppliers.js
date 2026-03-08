@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // GET all suppliers
 router.get('/', async (req, res) => {
     try {
-        const { data, error } = await supabase.from('suppliers').select('*').order('name', { ascending: true });
+        const { data, error } = await supabase.from('suppliers').select('*').eq('user_id', req.user.id).order('name', { ascending: true });
         if (error) throw error;
         res.json(data);
     } catch (error) {
@@ -19,6 +22,7 @@ router.post('/', async (req, res) => {
     try {
         const { name, phone, email, address, gstin, drugLicense } = req.body;
         const { data, error } = await supabase.from('suppliers').insert([{
+            user_id: req.user.id,
             name, phone: phone || '', email: email || '', address: address || '', gstin: gstin || '', druglicense: drugLicense || ''
         }]).select().single();
 
@@ -36,7 +40,7 @@ router.put('/:id', async (req, res) => {
         const { name, phone, email, address, gstin, drugLicense } = req.body;
         const { error } = await supabase.from('suppliers').update({
             name, phone: phone || '', email: email || '', address: address || '', gstin: gstin || '', druglicense: drugLicense || ''
-        }).eq('id', req.params.id);
+        }).eq('id', req.params.id).eq('user_id', req.user.id);
 
         if (error) throw error;
         res.json({ message: 'Supplier updated' });
@@ -49,7 +53,7 @@ router.put('/:id', async (req, res) => {
 // DELETE supplier
 router.delete('/:id', async (req, res) => {
     try {
-        const { error } = await supabase.from('suppliers').delete().eq('id', req.params.id);
+        const { error } = await supabase.from('suppliers').delete().eq('id', req.params.id).eq('user_id', req.user.id);
         if (error) throw error;
         res.json({ message: 'Supplier deleted' });
     } catch (error) {

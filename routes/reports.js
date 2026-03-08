@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // Sales report
 router.get('/sales', async (req, res) => {
     try {
         const { from, to } = req.query;
-        let query = supabase.from('sales').select('*').order('date', { ascending: false });
+        let query = supabase.from('sales').select('*').eq('user_id', req.user.id).order('date', { ascending: false });
 
         if (from) query = query.gte('date', from);
         if (to) query = query.lte('date', to + 'T23:59:59');
@@ -28,7 +31,7 @@ router.get('/sales', async (req, res) => {
 router.get('/purchases', async (req, res) => {
     try {
         const { from, to } = req.query;
-        let query = supabase.from('purchases').select('*, suppliers(name)').order('date', { ascending: false });
+        let query = supabase.from('purchases').select('*, suppliers(name)').eq('user_id', req.user.id).order('date', { ascending: false });
 
         if (from) query = query.gte('date', from);
         if (to) query = query.lte('date', to + 'T23:59:59');
@@ -52,7 +55,7 @@ router.get('/purchases', async (req, res) => {
 // Stock report
 router.get('/stock', async (req, res) => {
     try {
-        const { data: inventory, error } = await supabase.from('medicines').select('*').order('name', { ascending: true });
+        const { data: inventory, error } = await supabase.from('medicines').select('*').eq('user_id', req.user.id).order('name', { ascending: true });
         if (error) throw error;
 
         const totalItems = (inventory || []).length;
@@ -74,7 +77,7 @@ router.get('/expiry', async (req, res) => {
         const now = new Date();
         const nowStr = now.toISOString().split('T')[0];
 
-        let query = supabase.from('medicines').select('*').neq('expirydate', '').order('expirydate', { ascending: true });
+        let query = supabase.from('medicines').select('*').eq('user_id', req.user.id).neq('expirydate', '').order('expirydate', { ascending: true });
 
         if (d === -1) {
             query = query.lte('expirydate', nowStr);
@@ -100,8 +103,8 @@ router.get('/profitloss', async (req, res) => {
     try {
         const { from, to } = req.query;
 
-        let salesQuery = supabase.from('sales').select('nettotal');
-        let purQuery = supabase.from('purchases').select('total');
+        let salesQuery = supabase.from('sales').select('nettotal').eq('user_id', req.user.id);
+        let purQuery = supabase.from('purchases').select('total').eq('user_id', req.user.id);
 
         if (from) {
             salesQuery = salesQuery.gte('date', from);

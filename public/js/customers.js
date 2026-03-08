@@ -15,12 +15,12 @@ window.renderCustomers = async function () {
         <div class="toolbar">
             <input type="text" id="cust-search" placeholder="Search customers..." oninput="loadCustomerTable()"/>
         </div>
-        <div class="table-responsive"><div class="table-wrap">
+        <div class="table-wrap">
             <table>
                 <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Total Purchases</th><th>Balance</th><th>Actions</th></tr></thead>
                 <tbody id="cust-tbody"><tr><td colspan="6" class="table-empty">Loading...</td></tr></tbody>
             </table>
-        </div></div>
+        </div>
     `;
     loadCustomerTable();
 };

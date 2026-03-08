@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // GET all settings
 router.get('/', async (req, res) => {
@@ -22,7 +25,8 @@ router.put('/', async (req, res) => {
     try {
         const updates = Object.entries(req.body).map(([key, value]) => ({
             key,
-            value: String(value)
+            value: String(value),
+            user_id: req.user.id
         }));
 
         // Supabase upsert requires primary key conflict resolution
@@ -41,14 +45,14 @@ router.get('/export', async (req, res) => {
     try {
         // Fetch all tables concurrently
         const [meds, supps, custs, sales, saleItems, purs, purItems, sets] = await Promise.all([
-            supabase.from('medicines').select('*'),
-            supabase.from('suppliers').select('*'),
-            supabase.from('customers').select('*'),
-            supabase.from('sales').select('*'),
-            supabase.from('sale_items').select('*'),
-            supabase.from('purchases').select('*'),
-            supabase.from('purchase_items').select('*'),
-            supabase.from('settings').select('*')
+            supabase.from('medicines').select('*').eq('user_id', req.user.id),
+            supabase.from('suppliers').select('*').eq('user_id', req.user.id),
+            supabase.from('customers').select('*').eq('user_id', req.user.id),
+            supabase.from('sales').select('*').eq('user_id', req.user.id),
+            supabase.from('sale_items').select('*, sales!inner(user_id)').eq('sales.user_id', req.user.id), // assumes relation
+            supabase.from('purchases').select('*').eq('user_id', req.user.id),
+            supabase.from('purchase_items').select('*, purchases!inner(user_id)').eq('purchases.user_id', req.user.id), // assumes relation
+            supabase.from('settings').select('*').eq('user_id', req.user.id)
         ]);
 
         const data = {
@@ -74,7 +78,7 @@ router.get('/export', async (req, res) => {
 // GET export inventory as CSV
 router.get('/export/csv/inventory', async (req, res) => {
     try {
-        const { data: meds, error } = await supabase.from('medicines').select('*').order('name', { ascending: true });
+        const { data: meds, error } = await supabase.from('medicines').select('*').eq('user_id', req.user.id).order('name', { ascending: true });
         if (error) throw error;
 
         if (!meds || !meds.length) return res.status(404).send('No data');
@@ -98,15 +102,24 @@ router.post('/clear', async (req, res) => {
         // We have foreign key constraints, so order matters. Must delete child items first.
         // OR we can just delete via raw RPC, but let's do sequential deletes.
         // Note: Supabase delete requires filters or neq. 
-        // using .neq('id', 0) to delete all.
+        // using .eq('user_id', req.user.id) to delete only current user's data.
 
-        await supabase.from('sale_items').delete().neq('id', 0);
-        await supabase.from('sales').delete().neq('id', 0);
-        await supabase.from('purchase_items').delete().neq('id', 0);
-        await supabase.from('purchases').delete().neq('id', 0);
-        await supabase.from('medicines').delete().neq('id', 0);
-        await supabase.from('suppliers').delete().neq('id', 0);
-        await supabase.from('customers').delete().neq('id', 0);
+        // Items first (via parent eq)
+        const { data: userSales } = await supabase.from('sales').select('id').eq('user_id', req.user.id);
+        if (userSales && userSales.length) {
+            await supabase.from('sale_items').delete().in('saleid', userSales.map(s => s.id));
+        }
+
+        const { data: userPurchases } = await supabase.from('purchases').select('id').eq('user_id', req.user.id);
+        if (userPurchases && userPurchases.length) {
+            await supabase.from('purchase_items').delete().in('purchaseid', userPurchases.map(p => p.id));
+        }
+
+        await supabase.from('sales').delete().eq('user_id', req.user.id);
+        await supabase.from('purchases').delete().eq('user_id', req.user.id);
+        await supabase.from('medicines').delete().eq('user_id', req.user.id);
+        await supabase.from('suppliers').delete().eq('user_id', req.user.id);
+        await supabase.from('customers').delete().eq('user_id', req.user.id);
 
         res.json({ message: 'All data cleared' });
     } catch (error) {

@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // GET all sales
 router.get('/', async (req, res) => {
@@ -17,7 +20,7 @@ router.get('/', async (req, res) => {
 // GET single sale with items
 router.get('/:id', async (req, res) => {
     try {
-        const { data: sale, error } = await supabase.from('sales').select('*').eq('id', req.params.id).single();
+        const { data: sale, error } = await supabase.from('sales').select('*').eq('id', req.params.id).eq('user_id', req.user.id).single();
         if (error) throw error;
         if (!sale) return res.status(404).json({ error: 'Sale not found' });
 
@@ -40,6 +43,7 @@ router.post('/', async (req, res) => {
 
         // 1. Insert Sale record
         const { data: sale, error: saleError } = await supabase.from('sales').insert([{
+            user_id: req.user.id,
             invoiceno: invoiceNo,
             customername: customerName || 'Walk-in',
             customerid: customerId || null,
@@ -71,25 +75,25 @@ router.post('/', async (req, res) => {
             const { error: itemsError } = await supabase.from('sale_items').insert(saleItems);
             if (itemsError) throw itemsError;
 
-            // Update medicine stock
+            // Update medicine stock (ensure we only update user's medicine)
             for (const item of items) {
                 if (item.medicineId) {
-                    const { data: med, error: medError } = await supabase.from('medicines').select('stock').eq('id', item.medicineId).single();
+                    const { data: med, error: medError } = await supabase.from('medicines').select('stock').eq('id', item.medicineId).eq('user_id', req.user.id).single();
                     if (!medError && med) {
                         const newStock = Math.max(0, med.stock - item.qty);
-                        await supabase.from('medicines').update({ stock: newStock }).eq('id', item.medicineId);
+                        await supabase.from('medicines').update({ stock: newStock }).eq('id', item.medicineId).eq('user_id', req.user.id);
                     }
                 }
             }
         }
 
-        // 3. Update Customer totals
+        // 3. Update Customer totals (ensure we only update user's customer)
         if (customerId) {
-            const { data: cust, error: custError } = await supabase.from('customers').select('totalpurchases, balance').eq('id', customerId).single();
+            const { data: cust, error: custError } = await supabase.from('customers').select('totalpurchases, balance').eq('id', customerId).eq('user_id', req.user.id).single();
             if (!custError && cust) {
                 const tp = (cust.totalpurchases || 0) + (netTotal || 0);
                 const bal = paymentMode === 'Credit' ? (cust.balance || 0) + (netTotal || 0) : cust.balance;
-                await supabase.from('customers').update({ totalpurchases: tp, balance: bal }).eq('id', customerId);
+                await supabase.from('customers').update({ totalpurchases: tp, balance: bal }).eq('id', customerId).eq('user_id', req.user.id);
             }
         }
 

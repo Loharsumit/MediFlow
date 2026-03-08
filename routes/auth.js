@@ -67,4 +67,33 @@ router.get('/me', async (req, res) => {
     }
 });
 
+// GET /api/auth/google
+router.get('/google', async (req, res) => {
+    try {
+        const redirectUrl = `${req.protocol}://${req.get('host')}/api/auth/callback`;
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: redirectUrl,
+            }
+        });
+
+        if (error) throw error;
+        res.redirect(data.url);
+    } catch (error) {
+        console.error('Google login error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// GET /api/auth/callback
+router.get('/callback', async (req, res) => {
+    // Supabase redirects to the callback URL with the token in the URL hash (e.g., #access_token=...)
+    // Since this is handled on the client-side (app.js reads the hash), we just need to redirect back to the home page
+    // The client-side will extract the token from the hash.
+    // However, if the server needs to handle a code exchange (if using PKCE), that would be done here.
+    // For standard Supabase implicit flow, redirecting to / with the hash preserved is usually sufficient.
+    res.redirect('/');
+});
+
 module.exports = router;

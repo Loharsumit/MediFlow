@@ -57,6 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ═══ GOOGLE LOGIN ═══
+    const handleGoogleAuth = () => {
+        // Redirect to the backend route to initiate OAuth
+        window.location.href = '/api/auth/google';
+    };
+
+    document.getElementById('btn-google-login')?.addEventListener('click', handleGoogleAuth);
+    document.getElementById('btn-google-signup')?.addEventListener('click', handleGoogleAuth);
+
+    // Check for tokens (e.g. from Google Auth callback) in the URL hash
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    if (accessToken) {
+        API.setToken(accessToken);
+        window.history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    }
+
     // ═══ AUTO-LOGIN (if token exists) ═══
     if (API.token) {
         API.me().then(res => enterApp(res.user)).catch(() => { API.setToken(null); });

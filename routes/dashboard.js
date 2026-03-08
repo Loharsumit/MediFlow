@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 router.get('/', async (req, res) => {
     try {
@@ -10,6 +13,7 @@ router.get('/', async (req, res) => {
         const { data: todaySales, error: salesError } = await supabase
             .from('sales')
             .select('*')
+            .eq('user_id', req.user.id)
             .gte('date', todayStr);
 
         if (salesError) throw salesError;
@@ -19,6 +23,7 @@ router.get('/', async (req, res) => {
         const { data: todayPurchases, error: purError } = await supabase
             .from('purchases')
             .select('*')
+            .eq('user_id', req.user.id)
             .gte('date', todayStr);
 
         if (purError) throw purError;
@@ -27,7 +32,8 @@ router.get('/', async (req, res) => {
         // Low stock
         const { data: allMeds, error: medsError } = await supabase
             .from('medicines')
-            .select('*');
+            .select('*')
+            .eq('user_id', req.user.id);
 
         if (medsError) throw medsError;
 
@@ -47,6 +53,7 @@ router.get('/', async (req, res) => {
         const { data: expiringItems, error: expError } = await supabase
             .from('medicines')
             .select('*')
+            .eq('user_id', req.user.id)
             .gt('expirydate', nowStr)
             .lte('expirydate', thirtyDaysStr)
             .neq('expirydate', '');
@@ -57,6 +64,7 @@ router.get('/', async (req, res) => {
         const { data: recentSalesAll } = await supabase
             .from('sales')
             .select('*')
+            .eq('user_id', req.user.id)
             .order('date', { ascending: false })
             .limit(8);
 

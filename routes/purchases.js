@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const supabase = require('../db/supabase');
+const requireAuth = require('../middleware/authMiddleware');
+
+router.use(requireAuth);
 
 // GET all purchases
 router.get('/', async (req, res) => {
@@ -8,6 +11,7 @@ router.get('/', async (req, res) => {
         const { data, error } = await supabase
             .from('purchases')
             .select('*, suppliers(name)')
+            .eq('user_id', req.user.id)
             .order('date', { ascending: false });
 
         if (error) throw error;
@@ -27,7 +31,7 @@ router.get('/', async (req, res) => {
 // GET single purchase with items
 router.get('/:id', async (req, res) => {
     try {
-        const { data: purchase, error } = await supabase.from('purchases').select('*').eq('id', req.params.id).single();
+        const { data: purchase, error } = await supabase.from('purchases').select('*').eq('id', req.params.id).eq('user_id', req.user.id).single();
         if (error) throw error;
         if (!purchase) return res.status(404).json({ error: 'Purchase not found' });
 
@@ -50,6 +54,7 @@ router.post('/', async (req, res) => {
 
         // 1. Insert Purchase
         const { data: purchase, error: purError } = await supabase.from('purchases').insert([{
+            user_id: req.user.id,
             purchaseno: purchaseNo,
             supplierid: supplierId || null,
             supplierinvno: supplierInvNo || '',
@@ -87,6 +92,7 @@ router.post('/', async (req, res) => {
                 const { data: meds, error: findError } = await supabase
                     .from('medicines')
                     .select('*')
+                    .eq('user_id', req.user.id)
                     .ilike('name', item.name)
                     .eq('batch', item.batch || '');
 
@@ -101,9 +107,10 @@ router.post('/', async (req, res) => {
                     if ((item.mrp || 0) > 0) updates.mrp = item.mrp;
                     if (item.expiryDate && item.expiryDate !== '') updates.expirydate = item.expiryDate;
 
-                    await supabase.from('medicines').update(updates).eq('id', existing.id);
+                    await supabase.from('medicines').update(updates).eq('id', existing.id).eq('user_id', req.user.id);
                 } else {
                     await supabase.from('medicines').insert([{
+                        user_id: req.user.id,
                         name: item.name,
                         company: item.company || '',
                         batch: item.batch || '',
@@ -125,11 +132,11 @@ router.post('/', async (req, res) => {
 
         // 3. Update Supplier totals
         if (supplierId) {
-            const { data: supp, error: suppError } = await supabase.from('suppliers').select('totalpurchases, balance').eq('id', supplierId).single();
+            const { data: supp, error: suppError } = await supabase.from('suppliers').select('totalpurchases, balance').eq('id', supplierId).eq('user_id', req.user.id).single();
             if (!suppError && supp) {
                 const tp = (supp.totalpurchases || 0) + (total || 0);
                 const bal = (supp.balance || 0) + (total || 0);
-                await supabase.from('suppliers').update({ totalpurchases: tp, balance: bal }).eq('id', supplierId);
+                await supabase.from('suppliers').update({ totalpurchases: tp, balance: bal }).eq('id', supplierId).eq('user_id', req.user.id);
             }
         }
 

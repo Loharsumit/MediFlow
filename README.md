@@ -52,8 +52,6 @@ MediFlow-ERP/
 ├── config/
 └── README.md
 
-````
-
 ## 📸 Screenshots
 
 <img width="1365" height="727" alt="image" src="https://github.com/user-attachments/assets/593b0d09-24a0-4441-9e4a-74ac44d3ee67" />
@@ -73,7 +71,7 @@ Frontend Developer
 <p align="center">
   ⭐ If you like this project, consider giving it a star!
 </p>
-```
+
 
 ---
 

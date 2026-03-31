@@ -45,12 +45,12 @@
 
 
 MediFlow-ERP/
-├── frontend/
-├── functions/
-├── routes/
-├── services/
-├── config/
-└── README.md
+├── 📁 frontend/ # User Interface (PWA)
+├── ⚙️ functions/ # Serverless Backend (Netlify)
+├── 🔗 routes/ # API Endpoints
+├── 🧠 services/ # Business Logic Layer
+├── 🛠️ config/ # Configuration Files
+└── 📄 README.md
 
 ---
 
@@ -63,18 +63,21 @@ MediFlow-ERP/
 <img width="1365" height="678" alt="image" src="https://github.com/user-attachments/assets/fe651ddb-d6bb-4636-a981-7b4386ae24ef" />
 ---
 
----
-🌐 Deployment
+## 🌐 Deployment
 
-Deployed using Netlify Serverless Architecture for scalable and efficient backend handling.
+🚀 Deployed using **Netlify Serverless Architecture**  
+Ensures scalability, high availability, and efficient backend execution.
 https://mediflow-erp.netlify.app/
----
-🎯 Business Value
 
-✔ Reduces manual work
-✔ Improves billing efficiency
-✔ Enhances stock accuracy
-✔ Saves operational time
+---
+
+## 🎯 Business Value
+
+✔ **Reduces Manual Work** – Automates repetitive operational tasks  
+✔ **Improves Billing Efficiency** – Faster and accurate transactions  
+✔ **Enhances Stock Accuracy** – Real-time inventory tracking  
+✔ **Saves Operational Time** – Streamlined workflow management  
+
 ---
 
 

@@ -52,6 +52,8 @@ MediFlow-ERP/
 ├── config/
 └── README.md
 
+---
+
 ## 📸 Screenshots
 
 <img width="1365" height="727" alt="image" src="https://github.com/user-attachments/assets/593b0d09-24a0-4441-9e4a-74ac44d3ee67" />
@@ -60,6 +62,21 @@ MediFlow-ERP/
 <img width="1365" height="679" alt="image" src="https://github.com/user-attachments/assets/2ba80cea-3c48-4a9c-b94a-439b0772865e" />
 <img width="1365" height="678" alt="image" src="https://github.com/user-attachments/assets/fe651ddb-d6bb-4636-a981-7b4386ae24ef" />
 ---
+
+---
+🌐 Deployment
+
+Deployed using Netlify Serverless Architecture for scalable and efficient backend handling.
+https://mediflow-erp.netlify.app/
+---
+🎯 Business Value
+
+✔ Reduces manual work
+✔ Improves billing efficiency
+✔ Enhances stock accuracy
+✔ Saves operational time
+---
+
 
 ## 👨‍💻 Author
 
